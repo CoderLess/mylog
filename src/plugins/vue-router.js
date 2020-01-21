@@ -4,6 +4,7 @@ import Login from "../components/login/Login.vue"
 import UserLogin from "../components/login/UserLogin.vue"
 import UserRegister from "../components/login/UserRegister.vue"
 import Index from "../components/main/Index.vue"
+import Catalog from "../components/log/Catalog.vue"
 Vue.use(VueRouter)
 const routes = [
   {
@@ -23,7 +24,13 @@ const routes = [
   },
   {
     path: "/index",
-    component: Index
+    component: Index,
+    children: [
+      {
+        path: "/catalog",
+        component: Catalog
+      }
+    ]
   }
 ]
 

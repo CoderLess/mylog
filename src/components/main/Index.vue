@@ -24,10 +24,16 @@
         <el-aside width="200px">
           <div class="menu">
             <el-menu>
+              <el-menu-item index="4">
+                <i class="el-icon-document"></i>
+                <span slot="title">
+                  <router-link to="/catalog">笔记本</router-link>
+                </span>
+              </el-menu-item>
               <el-submenu index="1">
                 <template slot="title">
                   <i class="el-icon-document"></i>
-                  <span>笔记本</span>
+                  <span>导航一</span>
                 </template>
                 <el-menu-item-group>
                   <template slot="title">分组一</template>
@@ -50,15 +56,11 @@
                 <i class="el-icon-document"></i>
                 <span slot="title">导航三</span>
               </el-menu-item>
-              <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-              </el-menu-item>
             </el-menu>
           </div>
         </el-aside>
         <el-main>
-          <list-log></list-log>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -66,7 +68,6 @@
 </template>
 
 <script>
-import ListLog from '../log/ListLog.vue'
 export default {
   data() {
     return {
@@ -74,7 +75,6 @@ export default {
     };
   },
   components: {
-    ListLog
   },
   methods: {
     showUserCenter(data) {
