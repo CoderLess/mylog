@@ -1,38 +1,42 @@
 <template>
-  <div class="containerBox">
-    <el-form :model="loginForm" :rules="loginFormRules" ref="loginFormRef">
+  <div class="containerBox"
+       v-on:keyup.enter="loginHandle">
+    <el-form :model="loginForm"
+             :rules="loginFormRules"
+             ref="loginFormRef">
       <!-- 用户名区域 -->
       <el-form-item prop="userName">
-        <el-input
-          class="usernameBox"
-          placeholder="手机号/邮箱"
-          prefix-icon="el-icon-user"
-          v-model="loginForm.userName"
-          :spellcheck="false"
-        ></el-input>
+        <el-input class="usernameBox"
+                  placeholder="手机号/邮箱"
+                  prefix-icon="el-icon-user"
+                  v-model="loginForm.userName"
+                  :spellcheck="false"></el-input>
       </el-form-item>
       <!-- 密码输区域 -->
       <el-form-item prop="passWord">
-        <el-input
-          type="password"
-          class="passwordBox"
-          placeholder="请输入密码"
-          prefix-icon="el-icon-lock"
-          v-model="loginForm.passWord"
-        ></el-input>
+        <el-input type="password"
+                  class="passwordBox"
+                  placeholder="请输入密码"
+                  prefix-icon="el-icon-lock"
+                  v-model="loginForm.passWord"></el-input>
       </el-form-item>
       <!-- 验证码区域 -->
       <el-form-item prop="validateCode">
         <!-- 验证码输入框 -->
         <el-col :span="11">
-          <el-input class="passwordBox" placeholder="请输入验证码" v-model="loginForm.validateCode"></el-input>
+          <el-input class="passwordBox"
+                    placeholder="请输入验证码"
+                    v-model="loginForm.validateCode"></el-input>
         </el-col>
         <!-- 验证码图片区域 -->
         <el-col :span="11">
-          <img :src="src" @click="changeCode" />
+          <img :src="src"
+               @click="changeCode" />
         </el-col>
       </el-form-item>
-      <el-button class="loginBtn" type="primary" @click="loginHandle">登入</el-button>
+      <el-button class="loginBtn"
+                 type="primary"
+                 @click="loginHandle">登入</el-button>
     </el-form>
   </div>
 </template>
@@ -40,7 +44,7 @@
 <script>
 
 export default {
-  data() {
+  data () {
     // 自定义过滤规则
     var checkUserName = (rule, value, callback) => {
       if (!value) {
@@ -81,7 +85,7 @@ export default {
   },
 
   methods: {
-    changeCode() {
+    changeCode () {
       this.$http.get('/imageCode', { responseType: 'arraybuffer' }).then(res => {
         window.sessionStorage.setItem('img-token', res.headers.authorization)
         return 'data:image/png;base64,' + btoa(
@@ -89,29 +93,31 @@ export default {
         )
       }).then(data => {
         this.src = data
-      }).catch(ex => {
-        console.log(ex)
       })
     },
-    loginHandle() {
+    loginHandle () {
       this.$refs.loginFormRef.validate((valid) => {
         // 校验失败返回
         if (!valid) { return }
         // 校验成功走登入接口
-        this.$http.post('/users/login', this.loginForm, {headers:{'img-token':window.sessionStorage.getItem('img-token')}}).then(res => {
+        this.$http.post('/users/login', this.loginForm, { headers: { 'img-token': window.sessionStorage.getItem('img-token') } }).then(res => {
           if (res.data.status != 200) {
+            window.sessionStorage.setItem('token', '')
             this.$message.error(res.data.message)
             this.changeCode()
             return
           }
           this.$message.success(res.data.message)
-          window.sessionStorage.setItem('token', res.data.token)
+          window.sessionStorage.setItem('token', res.data.data.token)
+          const objToStr = '{"id":' + res.data.data.id + ',"userName":"' + res.data.data.userName + '"}'
+          window.sessionStorage.setItem('userInfo', objToStr)
+          window.sessionStorage.removeItem('img-token')
           this.$router.push('/index')
         })
       })
     }
   },
-  mounted() {
+  mounted () {
     this.changeCode()
   }
 

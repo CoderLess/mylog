@@ -5,6 +5,10 @@ import UserLogin from "../components/login/UserLogin.vue"
 import UserRegister from "../components/login/UserRegister.vue"
 import Index from "../components/main/Index.vue"
 import Catalog from "../components/log/Catalog.vue"
+import ViewArticle from "../components/log/ViewArticle.vue"
+import WriteArticle from "../components/log/WriteArticle.vue"
+import MenuManage from "../components/menu/MenuManage.vue"
+import Record from "../components/record/Record.vue"
 Vue.use(VueRouter)
 const routes = [
   {
@@ -28,9 +32,25 @@ const routes = [
     children: [
       {
         path: "/catalog",
-        component: Catalog
+        component: Catalog,
+      },
+      {
+        path: "/menuManage",
+        component: MenuManage,
+      },
+      {
+        path: "/record",
+        component: Record
       }
     ]
+  },
+  {
+    path: "/viewArticle/:id",
+    component: ViewArticle
+  },
+  {
+    path: "/writeArticle/:id",
+    component: WriteArticle
   }
 ]
 

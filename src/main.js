@@ -5,6 +5,8 @@ import router from './plugins/vue-router.js'
 import './plugins/element-ui.js'
 import './plugins/axios.js'
 import './css/global.css'
+import './assets/icon/iconfont.css'
+// import './plugins/vuedraggable.js'
 Vue.config.productionTip = false
 
 new Vue({
